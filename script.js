@@ -9,29 +9,25 @@ menuToggle.addEventListener("click", () => {
 // ================= CONTACT FORM SUBMIT =================
 const form = document.querySelector(".contact-form");
 
-form.addEventListener("submit", function(e) {
-    e.preventDefault();
-    alert("Thank you for reaching out! I will get back to you soon.");
-    form.reset();
+if (form) {
+    form.addEventListener("submit", function(e) {
+        e.preventDefault();
+        alert("Thank you for reaching out! I will get back to you soon.");
+        form.reset();
+    });
+}
+
+// SCROLL REVEAL (modern version)
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add("active");
+        }
+    });
+}, {
+    threshold: 0.15
 });
 
-const track = document.getElementById("sliderTrack");
-const leftBtn = document.getElementById("leftBtn");
-const rightBtn = document.getElementById("rightBtn");
-
-// Scroll amount = width of one card
-const scrollAmount = 320;
-
-rightBtn.addEventListener("click", () => {
-    track.scrollBy({
-        left: scrollAmount,
-        behavior: "smooth"
-    });
-});
-
-leftBtn.addEventListener("click", () => {
-    track.scrollBy({
-        left: -scrollAmount,
-        behavior: "smooth"
-    });
+document.querySelectorAll(".reveal").forEach(el => {
+    observer.observe(el);
 });
