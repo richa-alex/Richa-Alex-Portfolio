@@ -31,3 +31,27 @@ const observer = new IntersectionObserver((entries) => {
 document.querySelectorAll(".reveal").forEach(el => {
     observer.observe(el);
 });
+
+const intro = document.getElementById("intro");
+
+let timer;
+
+intro.addEventListener("mouseenter", () => {
+
+    // wait for animation to complete
+    timer = setTimeout(() => {
+        intro.classList.add("hide");
+    }, 3000); // match your animation duration
+
+});
+
+intro.addEventListener("mouseleave", () => {
+    // cancel if user moves away early
+    clearTimeout(timer);
+});
+
+if (window.innerWidth < 768) {
+    setTimeout(() => {
+        intro.classList.add("hide");
+    }, 3000);
+}

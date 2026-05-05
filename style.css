@@ -14,6 +14,109 @@
     --white: #ffffff;
 }
 
+/* ================= CUP INTRO ================= */
+
+.intro {
+    position: fixed;   /* THIS is the key */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: var(--cream);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.cup-container {
+    position: relative;
+    width: 500px;
+    height: 500px;
+    margin-left: 50px;
+    margin-top: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* cup image */
+.cup {
+    width: 100%;
+    display: block;
+    position: relative;
+    z-index: 1;
+}
+
+/* coffee inside cup */
+.coffee {
+    position: absolute;
+    bottom: 67%;
+    left: 16%;
+    width: 60%;
+    height: 0%;
+    background: #4e342e;
+    border-radius: 50%;
+    z-index: 2;
+}
+
+/* logo hidden initially */
+.logo-hidden {
+    width: 250px;
+    z-index: 3;
+    position: absolute;
+    margin-top: 40px;
+    margin-left: -40px;
+    opacity: 0;
+}
+
+.kettle {
+    position: absolute;
+    top: -20%;
+    left: 60%;
+    width: 300px;
+    opacity: 0.7;
+}
+
+.stream {
+    z-index: 4;
+    position: absolute;
+    top: 3%;
+    left: 63%;
+    width: 6px;
+    height: 0px;
+    background: #4e342e;
+    border-radius: 50px;
+}
+
+.cup-container:hover .kettle {
+    transition: transform 0.8s ease;
+    transform: rotate(-27deg);
+}
+
+.cup-container:hover .stream {
+    height: 140px;
+    transition: height 0.8s ease 0.6s;
+}
+
+/* HOVER → coffee fills */
+.cup-container:hover .coffee {
+    height: 7%; /* adjust based on cup depth */
+    transition: height 1.2s ease 1.2s;
+}
+
+/* HOVER → logo appears AFTER */
+.cup-container:hover .logo-hidden {
+    opacity: 1;
+    transition: opacity 1.6s ease 1.2s;
+}
+
+.intro.hide {
+    transform: translateY(-100vh);
+    transition: transform 1s ease;
+}
+
 /* ---------- GLOBAL RESET ---------- */
 * {
     margin: 0;
