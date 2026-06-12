@@ -1,57 +1,210 @@
-// ================= MOBILE NAV TOGGLE =================
-const menuToggle = document.getElementById("menu-toggle");
-const navLinks = document.querySelector(".nav-links");
+// ====================================
+// PORTFOLIO SCRIPT - WITH BOTH CASE STUDIES
+// ====================================
 
-menuToggle.addEventListener("click", () => {
-    navLinks.classList.toggle("active");
-});
+// ---------- MOBILE MENU ----------
+const menuToggle = document.getElementById('menuToggle');
+const navLinks = document.querySelector('.nav-links');
 
-// ================= CONTACT FORM SUBMIT =================
-const form = document.querySelector(".contact-form");
-
-if (form) {
-    form.addEventListener("submit", function(e) {
-        e.preventDefault();
-        alert("Thank you for reaching out! I will get back to you soon.");
-        form.reset();
+if (menuToggle) {
+    menuToggle.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
     });
 }
 
-// SCROLL REVEAL (modern version)
-const observer = new IntersectionObserver((entries) => {
+document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+    });
+});
+
+// ---------- SCROLL REVEAL ----------
+const revealElements = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            entry.target.classList.add("active");
+            entry.target.classList.add('active');
         }
     });
-}, {
-    threshold: 0.15
-});
+}, { threshold: 0.15 });
 
-document.querySelectorAll(".reveal").forEach(el => {
-    observer.observe(el);
-});
+revealElements.forEach(el => revealObserver.observe(el));
 
-const intro = document.getElementById("intro");
-
-let timer;
-
-intro.addEventListener("mouseenter", () => {
-
-    // wait for animation to complete
-    timer = setTimeout(() => {
-        intro.classList.add("hide");
-    }, 3000); // match your animation duration
-
-});
-
-intro.addEventListener("mouseleave", () => {
-    // cancel if user moves away early
-    clearTimeout(timer);
-});
-
-if (window.innerWidth < 768) {
-    setTimeout(() => {
-        intro.classList.add("hide");
-    }, 3000);
+// ---------- INTRO SCREEN ----------
+const introDiv = document.getElementById('intro');
+function hideIntro() {
+    if (introDiv && !introDiv.classList.contains('hide')) {
+        introDiv.classList.add('hide');
+    }
 }
+setTimeout(() => hideIntro(), 3500);
+introDiv?.addEventListener('click', () => hideIntro());
+
+// ========== MODAL HANDLING FOR BOTH CASE STUDIES ==========
+const teshuvahModal = document.getElementById('teshuvahModal');
+const enstyleModal = document.getElementById('enstyleModal');
+const neuropalModal = document.getElementById('neuropalModal');
+const cochinclubModal = document.getElementById('cochinclubModal');
+
+function openModal(modal) {
+    if (modal) {
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeModal(modal) {
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+}
+
+// Handle Teshuvah buttons (with data-case="teshuvah")
+document.querySelectorAll('[data-case="teshuvah"]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        console.log('Opening Teshuvah modal');
+        openModal(teshuvahModal);
+    });
+});
+
+// Handle Enstyle buttons (with data-case="enstyle")
+document.querySelectorAll('[data-case="enstyle"]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        console.log('Opening Enstyle modal');
+        openModal(enstyleModal);
+    });
+});
+
+document.querySelectorAll('[data-case="neuropal"]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        console.log('Opening NeuroPal modal');
+        openModal(neuropalModal);
+    });
+});
+
+document.querySelectorAll('[data-case="cochinclub"]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        console.log('Opening Cochin Club modal');
+        openModal(cochinclubModal);
+    });
+});
+
+// Also handle clicking on the whole card (not just button)
+document.querySelectorAll('.case-study-card').forEach(card => {
+    card.addEventListener('click', (e) => {
+        // Don't trigger if clicking button (prevents double)
+        if (e.target.closest('.view-case-btn')) return;
+        
+        const caseType = card.getAttribute('data-case');
+        if (caseType === 'teshuvah') {
+            openModal(teshuvahModal);
+        } else if (caseType === 'enstyle') {
+            openModal(enstyleModal);
+        } else if (caseType === 'neuropal') {
+    openModal(neuropalModal);
+}  else if (caseType === 'cochinclub') {
+    openModal(cochinclubModal);
+}
+
+    });
+});
+
+// Close buttons for both modals
+document.querySelectorAll('.modal-close, .close-modal-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        closeModal(teshuvahModal);
+        closeModal(enstyleModal);
+        closeModal(neuropalModal);
+        closeModal(cochinclubModal);
+    });
+});
+
+// Click outside to close
+window.addEventListener('click', (e) => {
+    if (e.target === teshuvahModal) closeModal(teshuvahModal);
+    if (e.target === enstyleModal) closeModal(enstyleModal);
+    if (e.target === neuropalModal) closeModal(neuropalModal);
+    if (e.target === cochinclubModal) closeModal(cochinclubModal);
+});
+
+// Escape key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeModal(teshuvahModal);
+        closeModal(enstyleModal);
+    }
+});
+
+// ---------- SMOOTH SCROLLING ----------
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+            e.preventDefault();
+            targetElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});
+
+// ---------- COPY BUTTONS ----------
+document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+        const textToCopy = btn.getAttribute('data-copy');
+        try {
+            await navigator.clipboard.writeText(textToCopy);
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+            }, 2000);
+        } catch (err) {
+            console.error('Copy failed:', err);
+        }
+    });
+});
+
+// ---------- PDF DOWNLOAD BUTTONS ----------
+const teshuvahPdfBtn = document.querySelector('#teshuvahModal .download-pdf-btn');
+const enstylePdfBtn = document.querySelector('#enstyleModal .download-pdf-btn');
+const neuropalPdfBtn = document.querySelector('#neuropalModal .download-pdf-btn');
+const clubPdfBtn = document.querySelector('#cochinclubModal .download-pdf-btn');
+
+if (teshuvahPdfBtn) {
+    teshuvahPdfBtn.addEventListener('click', () => {
+        alert('Teshuvah PDF case study will be available soon. Contact me for detailed portfolio!');
+    });
+}
+
+if (enstylePdfBtn) {
+    enstylePdfBtn.addEventListener('click', () => {
+        alert('Enstyle Doors PDF case study will be available soon. Contact me for detailed portfolio!');
+    });
+}
+
+if (neuropalPdfBtn) {
+    neuropalPdfBtn.addEventListener('click', () => {
+        alert('NeuroPal PDF case study will be available soon. Contact me for detailed portfolio!');
+    });
+}
+
+if (clubPdfBtn) {
+    clubPdfBtn.addEventListener('click', () => {
+        alert('Full portfolio PDF available on request. Contact me!');
+    });
+}
+
+console.log('🔥 Portfolio ready — Both case studies loaded!');
+console.log('Teshuvah modal exists:', !!teshuvahModal);
+console.log('Enstyle modal exists:', !!enstyleModal);
+console.log('Enstyle buttons found:', document.querySelectorAll('[data-case="enstyle"]').length);
